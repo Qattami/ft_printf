@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
+/*   ft_putchar.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iqattami <iqattami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 16:50:58 by iqattami          #+#    #+#             */
-/*   Updated: 2023/11/22 22:49:03 by iqattami         ###   ########.fr       */
+/*   Updated: 2023/12/03 10:40:00 by iqattami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "prinft.h"
-#include<fcntl.h>
+#include "ft_printf.h"
 
-void	ft_putchar(char c)
+int	ft_putchar(char c)
 {
 	write(1, &c, 1);
+	return (1);
 }

@@ -3,27 +3,26 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: iqattami <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: iqattami <iqattami@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/24 10:14:00 by iqattami          #+#    #+#              #
-#    Updated: 2023/11/24 10:14:54 by iqattami         ###   ########.fr        #
+#    Updated: 2023/12/03 20:33:12 by iqattami         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = prinft.a
+NAME = libftprintf.a
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-
-SRCS = 
-
+SRCS = ft_putnbr.c ft_putchar.c ft_putnbrB.c ft_putstr.c ft_printf.c
 OBJ = $(SRCS:.c=.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
 	ar rc $(NAME) $(OBJ)
+
 clean:
-	rm -f $(OBJ) $(OBONUS)
+	rm -f $(OBJ)
 
 fclean: clean
 	rm -f $(NAME)

@@ -1,33 +1,67 @@
-#include "prinft.h"
+#include "ft_printf.h"
 
-void    ft_format(va_list args ,  char *s, int *nbr)
+
+int ft_adress(va_list args, const char *symbol)
 {
+    int nbr;
+    void *ptr;
 
-    if (*s == 'c')
+    ptr = va_arg(args, void *);
+    nbr = 0;
+     if (args == 0)
     {
-        ft_putchar(va_arg(args, int));
-        nbr++;
+        nbr += ft_putstr("(null)");
     }
-    else if (*s == 's')
-        nbr += ft_putstr_fd(va_arg(args, char *));
-    else if (*s == 'p')
-        return;
-    else if (*s == 'd' || *s == 'i')
-        nbr += ft_putnbrB(va_arg(args, int), 10, "0123456789");
-   else if (*s == 'u')
-    return;
-    else if (*s == 'x' || *s == 'X')
+    nbr += ft_putstr("0x");
+    nbr += ft_putnbrB((unsigned long int)ptr, 16, symbol);
+    return nbr;
+}
+
+int ft_putnbrB(unsigned long int n, int base, const char *symbol)
+{
+    int nbr;
+
+    nbr = 0;
+    if(n < 16)
     {
-        if(*s == 'x')
-            nbr += ft_putnbrB(va_arg(args,unsigned int), 16, HEX_LOWER);
-        else if(*s == 'X')
-            nbr += ft_putnbrB(va_arg(args,unsigned int), 16, HEX_LOWER);
+        nbr += ft_putchar(symbol[n]);
     }
     else
     {
-    ft_putchar(va_arg(args, int));
-    nbr++;
+        nbr += ft_putnbrB((n / base),base, symbol);
+        nbr += ft_putnbrB((n % base), base, symbol);
     }
+    return (nbr);
+}
+
+void ft_format(va_list args, const char *s, int *nbr)
+{
+    if (*s == 'c')
+    {
+       (*nbr) += ft_putchar(va_arg(args, int));
+
+    }
+    else if (*s == 's')
+        (*nbr) += ft_putstr(va_arg(args, char *));
+    else if (*s == 'p')
+        (*nbr) += ft_adress(args, HEX_LOWER);
+    else if (*s == 'd' || *s == 'i')
+        (*nbr) += ft_putnbr(va_arg(args, int));
+    else if (*s == 'u')
+        (*nbr) += ft_putnbr(va_arg(args, unsigned int));
+    else if (*s == 'x' || *s == 'X')
+    {
+        if (*s == 'x')
+            (*nbr) += ft_putnbrB(va_arg(args, unsigned int), 16,"0123456789abcdef");
+        else if (*s == 'X')
+            (*nbr) += ft_putnbrB(va_arg(args, unsigned int), 16, "0123456789ABCDEF");
+    }
+    else if (*s == '%')
+    {
+        ft_putchar(*s);
+        (*nbr)++;
+    }
+
 }
 
 int ft_printf(const char *s, ...)
@@ -37,22 +71,27 @@ int ft_printf(const char *s, ...)
 
     nbr = 0;
     va_start(ap, s);
-    while(s)
+    while (*s != '\0')
     {
-        if(*s == '%')
+        if (*s == '%')
         {
             s++;
-            if(!(*s))
+            if (!(*s))
                 break;
-            ft_format(ap, *s, &nbr);
+            ft_format(ap, s, &nbr);
         }
-        else 
+        else
         {
-            ft_putchar(*s);
-            nbr++;
+            nbr += ft_putchar(*s);
         }
         s++;
     }
     va_end(ap);
-    return (nbr);
+    return nbr;
 }
+
+int main()
+{
+    long long a = 4513232546445;
+    printf(" %p %p ", 0, 0);
+    }

@@ -8,9 +8,10 @@ int ft_adress(va_list args, const char *symbol)
 
     ptr = va_arg(args, void *);
     nbr = 0;
-     if (args == 0)
+    if ((int *)ptr == 0)
     {
-        nbr += ft_putstr("(null)");
+        (nbr) += ft_putstr("(nil)");
+        return (nbr);
     }
     nbr += ft_putstr("0x");
     nbr += ft_putnbrB((unsigned long int)ptr, 16, symbol);
@@ -42,9 +43,11 @@ void ft_format(va_list args, const char *s, int *nbr)
 
     }
     else if (*s == 's')
-        (*nbr) += ft_putstr(va_arg(args, char *));
+    {
+            (*nbr) += ft_putstr(va_arg(args, char *));
+    }
     else if (*s == 'p')
-        (*nbr) += ft_adress(args, HEX_LOWER);
+             (*nbr) += ft_adress(args,HEX_LOWER);
     else if (*s == 'd' || *s == 'i')
         (*nbr) += ft_putnbr(va_arg(args, int));
     else if (*s == 'u')
@@ -90,8 +93,7 @@ int ft_printf(const char *s, ...)
     return nbr;
 }
 
-int main()
-{
-    long long a = 4513232546445;
-    printf(" %p %p ", 0, 0);
-    }
+// int main ()
+// {
+//     ft_printf("%p",10);
+// }

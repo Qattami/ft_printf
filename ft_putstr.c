@@ -6,7 +6,7 @@
 /*   By: iqattami <iqattami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:16:15 by iqattami          #+#    #+#             */
-/*   Updated: 2023/12/03 10:39:42 by iqattami         ###   ########.fr       */
+/*   Updated: 2023/12/04 16:58:02 by iqattami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@ int	ft_putstr(char *s)
 	int	i;
 
 	i = 0;
+	if (!s)
+		{
+			write(1, "(null)", 6);
+			return (6);
+		}
 	while (s[i])
 	{
 		ft_putchar(s[i]);

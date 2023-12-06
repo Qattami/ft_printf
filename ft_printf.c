@@ -18,82 +18,66 @@ int ft_adress(va_list args, const char *symbol)
     return nbr;
 }
 
-int ft_putnbrB(unsigned long int n, int base, const char *symbol)
+int handle_percent(const char *s, int *i, int *nbr)
 {
-    int nbr;
-
-    nbr = 0;
-    if(n < 16)
-    {
-        nbr += ft_putchar(symbol[n]);
-    }
-    else
-    {
-        nbr += ft_putnbrB((n / base),base, symbol);
-        nbr += ft_putnbrB((n % base), base, symbol);
-    }
-    return (nbr);
+    if(s[*i] == '%' && !s[*i + 1])
+        return (-1);
+    *nbr += write(1, &s[*i], 1);
+    return (0);
 }
 
-void ft_format(va_list args, const char *s, int *nbr)
+void ft_format(va_list args, const char *s, int *nbr, int *i)
 {
-    if (*s == 'c')
-    {
+    if (s[*i +1] == '%')
+        *nbr += write(1, "%", 1);   
+    else if (s[*i +1] == 'c')
        (*nbr) += ft_putchar(va_arg(args, int));
-
-    }
-    else if (*s == 's')
-    {
+    else if (s[*i +1] == 's')
             (*nbr) += ft_putstr(va_arg(args, char *));
-    }
-    else if (*s == 'p')
+    else if (s[*i +1] == 'p')
              (*nbr) += ft_adress(args,HEX_LOWER);
-    else if (*s == 'd' || *s == 'i')
+    else if (s[*i +1] == 'd' || s[*i +1] == 'i')
         (*nbr) += ft_putnbr(va_arg(args, int));
-    else if (*s == 'u')
+    else if (s[*i +1] == 'u')
         (*nbr) += ft_putnbr(va_arg(args, unsigned int));
-    else if (*s == 'x' || *s == 'X')
+    else if (s[*i + 1] == 'x')
+        (*nbr) += ft_putnbrB(va_arg(args, unsigned int), 16,"0123456789abcdef");
+    else if (s[*i + 1] == 'X')
+        (*nbr) += ft_putnbrB(va_arg(args, unsigned int), 16, "0123456789ABCDEF");
+    else 
     {
-        if (*s == 'x')
-            (*nbr) += ft_putnbrB(va_arg(args, unsigned int), 16,"0123456789abcdef");
-        else if (*s == 'X')
-            (*nbr) += ft_putnbrB(va_arg(args, unsigned int), 16, "0123456789ABCDEF");
+        *nbr += ft_putchar(s[*i +1]);
+        *nbr += ft_putchar(s[*i]);
     }
-    else if (*s == '%')
-    {
-        ft_putchar(*s);
-        (*nbr)++;
-    }
-
+    (*i)++;
 }
-
 int ft_printf(const char *s, ...)
 {
     va_list ap;
     int nbr;
+    int i;
 
     nbr = 0;
+    i = 0;
     va_start(ap, s);
-    while (*s != '\0')
+    while (s[i])
     {
-        if (*s == '%')
-        {
-            s++;
-            if (!(*s))
-                break;
-            ft_format(ap, s, &nbr);
-        }
-        else
-        {
-            nbr += ft_putchar(*s);
-        }
-        s++;
+        if (s[i] == '%' && s[i+1])
+            ft_format(ap, s, &nbr, &i);
+        else if(handle_percent(s,&i,&nbr) == -1)
+            return(-1);
+        i++;
     }
     va_end(ap);
     return nbr;
 }
 
-// int main ()
-// {
-//     ft_printf("%p",10);
-// }
+int main ()
+{   
+     int i;
+     int j;
+     i = printf("%%%%%%%");
+     printf("\n %d", i);
+     j = ft_printf("%%%%%%%");
+     printf("\n %d", j);
+}

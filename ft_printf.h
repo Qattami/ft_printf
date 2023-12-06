@@ -9,7 +9,6 @@
 
 #define HEX_LOWER "0123456789abcdef"
 #define HEX_UPPER "0123456789ABCDEF"
-
 int ft_printf(const char *s, ...);
 int	ft_putchar(char c);
 int	ft_putnbr(long long n);
